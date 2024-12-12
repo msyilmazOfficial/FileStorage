@@ -13,7 +13,7 @@ namespace FileStorage.Entities
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [ForeignKey("UserId")]
+        [ForeignKey("CreateUserId")]
         public virtual User? CreateUser { get; set; }
 
         public int CreateUserId { get; set; }
