@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34202.233
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C8D85A15-F63E-49FC-91F6-C1F4E0E90CEE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{B5264A97-E174-45B3-8A09-BE4B86A05445}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{23EDB74A-8C25-45F9-B625-864D6671BC57}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileStorage.Entities", "FileStorage.Entities\FileStorage.Entities.csproj", "{356F656A-8B20-4FED-A797-81AB8B079A3D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{356F656A-8B20-4FED-A797-81AB8B079A3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{356F656A-8B20-4FED-A797-81AB8B079A3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{356F656A-8B20-4FED-A797-81AB8B079A3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{356F656A-8B20-4FED-A797-81AB8B079A3D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{356F656A-8B20-4FED-A797-81AB8B079A3D} = {C8D85A15-F63E-49FC-91F6-C1F4E0E90CEE}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F0B99DB6-67C7-475A-956E-45A9C5265235}
+	EndGlobalSection
+EndGlobal
