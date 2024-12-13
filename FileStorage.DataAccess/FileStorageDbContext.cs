@@ -19,7 +19,7 @@ namespace FileStorage.DataAccess
         }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<FileStorage.Entities.File> Files { get; set; }
+        public DbSet<Entities.File> Files { get; set; }
         public DbSet<Folder> Folders { get; set; }
         public DbSet<Permission> Permissions { get; set; }
     }
