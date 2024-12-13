@@ -23,8 +23,8 @@ namespace FileStorage.Entities
         [ForeignKey("UpdateUserId")]
         public virtual User? UpdateUser { get; set; }
 
-        public int UpdateUserId { get; set; }
+        public int? UpdateUserId { get; set; }
 
-        public DateTime UpdateDate { get; set; }
+        public DateTime? UpdateDate { get; set; }
     }
 }

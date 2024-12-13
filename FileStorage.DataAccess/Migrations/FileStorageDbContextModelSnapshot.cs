@@ -40,7 +40,7 @@ namespace FileStorage.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("FileSize")
+                    b.Property<long?>("FileSize")
                         .HasColumnType("bigint");
 
                     b.Property<string>("FileType")
@@ -50,10 +50,10 @@ namespace FileStorage.DataAccess.Migrations
                     b.Property<int?>("FolderId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("UpdateDate")
+                    b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UpdateUserId")
+                    b.Property<int?>("UpdateUserId")
                         .HasColumnType("int");
 
                     b.Property<string>("Url")
@@ -89,13 +89,13 @@ namespace FileStorage.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ParentFolderId")
+                    b.Property<int?>("ParentFolderId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("UpdateDate")
+                    b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UpdateUserId")
+                    b.Property<int?>("UpdateUserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -132,10 +132,10 @@ namespace FileStorage.DataAccess.Migrations
                     b.Property<int>("FolderId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("UpdateDate")
+                    b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UpdateUserId")
+                    b.Property<int?>("UpdateUserId")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
@@ -194,9 +194,7 @@ namespace FileStorage.DataAccess.Migrations
 
                     b.HasOne("FileStorage.Entities.User", "UpdateUser")
                         .WithMany()
-                        .HasForeignKey("UpdateUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UpdateUserId");
 
                     b.Navigation("CreateUser");
 
@@ -215,15 +213,11 @@ namespace FileStorage.DataAccess.Migrations
 
                     b.HasOne("FileStorage.Entities.Folder", "ParentFolder")
                         .WithMany()
-                        .HasForeignKey("ParentFolderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ParentFolderId");
 
                     b.HasOne("FileStorage.Entities.User", "UpdateUser")
                         .WithMany()
-                        .HasForeignKey("UpdateUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UpdateUserId");
 
                     b.Navigation("CreateUser");
 
@@ -254,9 +248,7 @@ namespace FileStorage.DataAccess.Migrations
 
                     b.HasOne("FileStorage.Entities.User", "UpdateUser")
                         .WithMany()
-                        .HasForeignKey("UpdateUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UpdateUserId");
 
                     b.HasOne("FileStorage.Entities.User", "User")
                         .WithMany()

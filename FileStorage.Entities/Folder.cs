@@ -14,7 +14,7 @@ namespace FileStorage.Entities
         [ForeignKey("ParentFolderId")]
         public virtual Folder? ParentFolder { get; set; }
 
-        public int ParentFolderId { get; set; }
+        public int? ParentFolderId { get; set; }
 
         public virtual ICollection<File>? Files { get; set; }
     }

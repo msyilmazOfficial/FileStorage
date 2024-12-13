@@ -33,11 +33,11 @@ namespace FileStorage.DataAccess.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FolderName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ParentFolderId = table.Column<int>(type: "int", nullable: false),
+                    ParentFolderId = table.Column<int>(type: "int", nullable: true),
                     CreateUserId = table.Column<int>(type: "int", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateUserId = table.Column<int>(type: "int", nullable: false),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    UpdateUserId = table.Column<int>(type: "int", nullable: true),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -46,8 +46,7 @@ namespace FileStorage.DataAccess.Migrations
                         name: "FK_Folders_Folders_ParentFolderId",
                         column: x => x.ParentFolderId,
                         principalTable: "Folders",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Folders_Users_CreateUserId",
                         column: x => x.CreateUserId,
@@ -58,8 +57,7 @@ namespace FileStorage.DataAccess.Migrations
                         name: "FK_Folders_Users_UpdateUserId",
                         column: x => x.UpdateUserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -69,14 +67,14 @@ namespace FileStorage.DataAccess.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FileSize = table.Column<long>(type: "bigint", nullable: false),
+                    FileSize = table.Column<long>(type: "bigint", nullable: true),
                     FileType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Url = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FolderId = table.Column<int>(type: "int", nullable: true),
                     CreateUserId = table.Column<int>(type: "int", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateUserId = table.Column<int>(type: "int", nullable: false),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    UpdateUserId = table.Column<int>(type: "int", nullable: true),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -96,8 +94,7 @@ namespace FileStorage.DataAccess.Migrations
                         name: "FK_Files_Users_UpdateUserId",
                         column: x => x.UpdateUserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -112,8 +109,8 @@ namespace FileStorage.DataAccess.Migrations
                     AccessLevel = table.Column<int>(type: "int", nullable: false),
                     CreateUserId = table.Column<int>(type: "int", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateUserId = table.Column<int>(type: "int", nullable: false),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    UpdateUserId = table.Column<int>(type: "int", nullable: true),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -140,8 +137,7 @@ namespace FileStorage.DataAccess.Migrations
                         name: "FK_Permissions_Users_UpdateUserId",
                         column: x => x.UpdateUserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Permissions_Users_UserId",
                         column: x => x.UserId,

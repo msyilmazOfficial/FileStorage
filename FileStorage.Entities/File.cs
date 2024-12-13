@@ -11,7 +11,7 @@ namespace FileStorage.Entities
     {
         public required string FileName { get; set; }
 
-        public long FileSize { get; set; }
+        public long? FileSize { get; set; }
 
         public required string FileType { get; set; }
 
