@@ -16,7 +16,14 @@ namespace FileStorage.API.Controllers
         }
 
 
-
+        /// <summary>
+        /// checks permissions returns boolean
+        /// also checks parent folders
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="folderId"></param>
+        /// <param name="fileId"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("[action]/{userId}/{folderId}/{fileId}")]
         public async Task<IActionResult> CheckPermission(int userId, int? folderId, int? fileId)

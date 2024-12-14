@@ -12,12 +12,12 @@ namespace FileStorage.Entities
         [ForeignKey("FileId")]
         public virtual File? File { get; set; }
 
-        public int FileId { get; set; }
+        public int? FileId { get; set; }
 
         [ForeignKey("FolderId")]
         public virtual Folder? Folder { get; set; }
 
-        public int FolderId { get; set; }
+        public int? FolderId { get; set; }
 
         [ForeignKey("UserId")]
         public virtual User? User { get; set; }
