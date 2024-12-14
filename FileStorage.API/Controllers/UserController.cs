@@ -1,12 +1,17 @@
 ﻿using FileStorage.Bussiness.Abstract;
 using FileStorage.Entities;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FileStorage.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -23,8 +28,10 @@ namespace FileStorage.API.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("[action]")]
+        [AllowAnonymous]
         public async Task<IActionResult> Create([FromBody] User user)
         {
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
             var User = await _userService.Create(user);
             return CreatedAtAction(nameof(Create), User);
         }
@@ -38,6 +45,7 @@ namespace FileStorage.API.Controllers
         /// <returns></returns>
         [HttpDelete]
         [Route("[action]/{id}")]
+        [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> Delete(int id)
         {
             if (await _userService.GetById(id) != null)
@@ -87,6 +95,7 @@ namespace FileStorage.API.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("[action]")]
+        [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> Update([FromBody] User user)
         {
 
@@ -94,6 +103,38 @@ namespace FileStorage.API.Controllers
             if (oldUser != null)
             {
                 return Ok(await _userService.Update(user));
+            }
+            return NotFound();
+        }
+
+
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("[action]/{userName}/{password}")]
+        public async Task<IActionResult> Authenticate(string userName, string password)
+        {
+
+            User user = _userService.GetAll().Result.ToList().Find(x => x.UserName == userName);
+            if (user != null)
+            {
+                if (BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
+                {
+                    var claim = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.NameIdentifier,user.UserName ?? String.Empty),
+                        new Claim(ClaimTypes.Role,user.Role.ToString()),
+                    };
+
+                    ClaimsIdentity claimsIdentity = new(claim, CookieAuthenticationDefaults.AuthenticationScheme);
+                    AuthenticationProperties authProperties = new() { AllowRefresh = true };
+
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+                    return Ok();
+
+                    //return user;
+                }
+                return NotFound();
             }
             return NotFound();
         }

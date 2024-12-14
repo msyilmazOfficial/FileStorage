@@ -1,5 +1,6 @@
 ﻿using FileStorage.Bussiness.Abstract;
 using FileStorage.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,7 @@ namespace FileStorage.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class PermissionController : ControllerBase
     {
         private readonly IPermissionService _permissionService;
@@ -44,6 +46,7 @@ namespace FileStorage.API.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("[action]")]
+        [Authorize(Roles = "SuperAdmin,Admin")]
         public async Task<IActionResult> Create([FromBody] Permission permission)
         {
             var Permission = await _permissionService.Create(permission);
@@ -59,6 +62,7 @@ namespace FileStorage.API.Controllers
         /// <returns></returns>
         [HttpDelete]
         [Route("[action]/{id}")]
+        [Authorize(Roles = "SuperAdmin,Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             if (await _permissionService.GetById(id) != null)
@@ -108,6 +112,7 @@ namespace FileStorage.API.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("[action]")]
+        [Authorize(Roles = "SuperAdmin,Admin")]
         public async Task<IActionResult> Update([FromBody] Permission permission)
         {
 

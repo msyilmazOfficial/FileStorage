@@ -29,7 +29,6 @@ namespace FileStorage.Bussiness.Concrete
 
         public async Task Delete(int id)
         {
-            //TODO only super admins can delete permissions
             await _permissionRepository.Delete(id);
         }
 
@@ -45,7 +44,6 @@ namespace FileStorage.Bussiness.Concrete
 
         public async Task<Permission> Update(Permission permission)
         {
-            //TODO only super admins can Update permissions
             return await _permissionRepository.Update(permission);
         }
     }

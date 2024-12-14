@@ -2,6 +2,7 @@ using FileStorage.Bussiness.Abstract;
 using FileStorage.Bussiness.Concrete;
 using FileStorage.DataAccess.Abstract;
 using FileStorage.DataAccess.Concrete;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,14 @@ builder.Services.AddSingleton<IFileRepository, FileRepository>();
 builder.Services.AddSingleton<IPermissionService, PermissionManager>();
 builder.Services.AddSingleton<IPermissionRepository, PermissionRepository>();
 
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+{
+    options.Cookie.Name = "NetCookieAuthentication";
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+    //options.LoginPath = "";
+    options.AccessDeniedPath = "";
+});
 
 
 builder.Services.AddControllers();

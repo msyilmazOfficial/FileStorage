@@ -16,5 +16,11 @@ namespace FileStorage.Entities
         public string? Email { get; set; }
         public required string Name { get; set; }
         public required string Surname { get; set; }
+        [Required]
+        public string? UserName { get; set; }
+        [Required]
+        public string? PasswordHash { get; set; }
+        [Required]
+        public Role Role { get; set; }
     }
 }

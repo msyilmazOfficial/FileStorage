@@ -23,7 +23,6 @@ namespace FileStorage.Bussiness.Concrete
 
         public async Task Delete(int id)
         {
-            //TODO only super admins can delete users
             await _userRepository.Delete(id);
         }
 
@@ -39,7 +38,6 @@ namespace FileStorage.Bussiness.Concrete
 
         public async Task<User> Update(User user)
         {
-            //TODO only super admins can Update users
             return await _userRepository.Update(user);
         }
     }
