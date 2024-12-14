@@ -3,6 +3,7 @@ using FileStorage.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FileStorage.API.Controllers
 {
@@ -12,9 +13,11 @@ namespace FileStorage.API.Controllers
     public class FolderController : ControllerBase
     {
         private readonly IFolderService _folderService;
-        public FolderController(IFolderService folderService)
+        private readonly IPermissionService _permissionService;
+        public FolderController(IFolderService folderService, IPermissionService permissionService)
         {
             _folderService = folderService;
+            _permissionService = permissionService;
         }
 
         /// <summary>
@@ -39,6 +42,10 @@ namespace FileStorage.API.Controllers
         [Route("[action]/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
+            var userId = User?.FindFirst(ClaimTypes.Sid)?.Value;
+            Permission permission = await _permissionService.CheckPermission(Convert.ToInt32(userId), id, 0);
+            if (permission == null || permission.AccessLevel != AccessLevel.Delete)
+                return Unauthorized(new { message = "You do not have permission" });
             if (await _folderService.GetById(id) != null)
             {
                 await _folderService.Delete(id);
@@ -55,6 +62,9 @@ namespace FileStorage.API.Controllers
         [Route("[action]")]
         public async Task<IActionResult> GetAll()
         {
+            var userRole = User?.FindFirst(ClaimTypes.Role)?.Value;
+            if (userRole != "SuperAdmin" && userRole != "Admin")
+                return Unauthorized(new { message = "You do not have permission" });
             var folders = await _folderService.GetAll();
             return Ok(folders);
         }
@@ -68,6 +78,10 @@ namespace FileStorage.API.Controllers
         [Route("[action]/{id}")]
         public async Task<IActionResult> GetById(int id)
         {
+            var userId = User?.FindFirst(ClaimTypes.Sid)?.Value;
+            Permission permission = await _permissionService.CheckPermission(Convert.ToInt32(userId), id, 0);
+            if (permission == null || (permission.AccessLevel != AccessLevel.Read && permission.AccessLevel != AccessLevel.Write))
+                return Unauthorized(new { message = "You do not have permission" });
             var folder = await _folderService.GetById(id);
             if (folder != null)
             {
@@ -87,7 +101,10 @@ namespace FileStorage.API.Controllers
         [Route("[action]")]
         public async Task<IActionResult> Update([FromBody] Folder folder)
         {
-
+            var userId = User?.FindFirst(ClaimTypes.Sid)?.Value;
+            Permission permission = await _permissionService.CheckPermission(Convert.ToInt32(userId), folder.Id, 0);
+            if (permission == null || permission.AccessLevel != AccessLevel.Write)
+                return Unauthorized(new { message = "You do not have permission" });
             var oldFolder = await _folderService.GetById(folder.Id);
             if (oldFolder != null)
             {

@@ -3,6 +3,7 @@ using FileStorage.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FileStorage.API.Controllers
 {
@@ -12,9 +13,11 @@ namespace FileStorage.API.Controllers
     public class FileController : ControllerBase
     {
         private readonly IFileService _fileService;
-        public FileController(IFileService fileService)
+        private readonly IPermissionService _permissionService;
+        public FileController(IFileService fileService, IPermissionService permissionService)
         {
             _fileService = fileService;
+            _permissionService = permissionService;
         }
 
         /// <summary>
@@ -40,6 +43,10 @@ namespace FileStorage.API.Controllers
         [Route("[action]/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
+            var userId = User?.FindFirst(ClaimTypes.Sid)?.Value;
+            Permission permission = await _permissionService.CheckPermission(Convert.ToInt32(userId), 0, id);
+            if (permission == null || permission.AccessLevel != AccessLevel.Delete)
+                return Unauthorized(new { message = "You do not have permission" });
             if (await _fileService.GetById(id) != null)
             {
                 await _fileService.Delete(id);
@@ -56,6 +63,9 @@ namespace FileStorage.API.Controllers
         [Route("[action]")]
         public async Task<IActionResult> GetAll()
         {
+            var userRole = User?.FindFirst(ClaimTypes.Role)?.Value;
+            if (userRole != "SuperAdmin" && userRole != "Admin")
+                return Unauthorized(new { message = "You do not have permission" });
             var files = await _fileService.GetAll();
             return Ok(files);
         }
@@ -69,6 +79,10 @@ namespace FileStorage.API.Controllers
         [Route("[action]/{id}")]
         public async Task<IActionResult> GetById(int id)
         {
+            var userId = User?.FindFirst(ClaimTypes.Sid)?.Value;
+            Permission permission = await _permissionService.CheckPermission(Convert.ToInt32(userId), 0, id);
+            if (permission == null || (permission.AccessLevel != AccessLevel.Read && permission.AccessLevel != AccessLevel.Write))
+                return Unauthorized(new { message = "You do not have permission" });
             var file = await _fileService.GetById(id);
             if (file != null)
             {
@@ -89,6 +103,10 @@ namespace FileStorage.API.Controllers
         public async Task<IActionResult> Update([FromBody] Entities.File file)
         {
 
+            var userId = User?.FindFirst(ClaimTypes.Sid)?.Value;
+            Permission permission = await _permissionService.CheckPermission(Convert.ToInt32(userId), 0, file.Id);
+            if (permission == null || permission.AccessLevel != AccessLevel.Write)
+                return Unauthorized(new { message = "You do not have permission" });
             var oldFile = await _fileService.GetById(file.Id);
             if (oldFile != null)
             {

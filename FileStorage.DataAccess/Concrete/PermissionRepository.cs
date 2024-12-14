@@ -7,26 +7,26 @@ namespace FileStorage.DataAccess.Concrete
     public class PermissionRepository : IPermissionRepository
     {
 
-        public async Task<bool> CheckPermission(int userId, int? folderId, int? fileId)
+        public async Task<Permission> CheckPermission(int userId, int? folderId, int? fileId)
         {
             using (var fileStorageDbContext = new FileStorageDbContext())
             {
                 if (folderId > 0)
                 {
                     if (fileStorageDbContext.Permissions.ToList().Exists(permission => permission.FolderId == folderId && permission.UserId == userId))
-                        return await Task.FromResult(true);
+                        return await Task.FromResult(fileStorageDbContext.Permissions.First(permission => permission.FolderId == folderId && permission.UserId == userId));
 
                     Folder folder = fileStorageDbContext.Folders.Find(folderId);
                     if (folder == null || folder.ParentFolderId == null)
-                        return await Task.FromResult(false);
+                        return await Task.FromResult(new Permission());
 
 
                     return await CheckPermission(userId, folder.ParentFolderId, fileId);
                 }
                 else if (fileId > 0)
-                    return await Task.FromResult(fileStorageDbContext.Permissions.ToList().Exists(permission => permission.FileId == fileId && permission.UserId == userId));
+                    return await Task.FromResult(fileStorageDbContext.Permissions.First(permission => permission.FileId == fileId && permission.UserId == userId));
                 else
-                    return await Task.FromResult(false);
+                    return await Task.FromResult(new Permission());
             }
         }
 

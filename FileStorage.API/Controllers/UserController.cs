@@ -124,6 +124,7 @@ namespace FileStorage.API.Controllers
                     {
                         new Claim(ClaimTypes.NameIdentifier,user.UserName ?? String.Empty),
                         new Claim(ClaimTypes.Role,user.Role.ToString()),
+                        new Claim(ClaimTypes.Sid,user.Id.ToString()),
                     };
 
                     ClaimsIdentity claimsIdentity = new(claim, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -131,8 +132,6 @@ namespace FileStorage.API.Controllers
 
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
                     return Ok();
-
-                    //return user;
                 }
                 return NotFound();
             }

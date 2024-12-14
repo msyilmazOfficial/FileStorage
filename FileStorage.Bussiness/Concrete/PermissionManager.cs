@@ -13,11 +13,11 @@ namespace FileStorage.Bussiness.Concrete
             _permissionRepository = permissionRepository;
         }
 
-        public async Task<bool> CheckPermission(int userId, int? folderId, int? fileId)
+        public async Task<Permission> CheckPermission(int userId, int? folderId, int? fileId)
         {
             if ((folderId == null && fileId == null) || (folderId < 1 && fileId < 1))
             {
-                return await Task.FromResult(false);
+                return await Task.FromResult(new Permission());
             }
             return await _permissionRepository.CheckPermission(userId, folderId, fileId);
         }

@@ -9,6 +9,8 @@ namespace FileStorage.Entities
     public enum AccessLevel
     {
         Read,
-        Write
+        Write,
+        Comment,
+        Delete
     }
 }

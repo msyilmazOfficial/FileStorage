@@ -34,8 +34,8 @@ namespace FileStorage.API.Controllers
             {
                 return BadRequest(new { message = "Both folderId and fileId are empty." });
             }
-            bool HasPermission = await _permissionService.CheckPermission(userId, folderId, fileId);
-            return Ok(HasPermission);
+            Permission permission = await _permissionService.CheckPermission(userId, folderId, fileId);
+            return Ok(permission);
         }
 
 

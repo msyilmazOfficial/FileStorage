@@ -9,6 +9,6 @@ namespace FileStorage.DataAccess.Abstract
         Task<Permission> Create(Permission permission);
         Task<Permission> Update(Permission permission);
         Task Delete(int id);
-        Task<bool> CheckPermission(int userId, int? folderId, int? fileId);
+        Task<Permission> CheckPermission(int userId, int? folderId, int? fileId);
     }
 }
