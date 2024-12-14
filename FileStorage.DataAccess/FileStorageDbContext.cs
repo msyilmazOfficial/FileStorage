@@ -1,10 +1,12 @@
 ﻿using FileStorage.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace FileStorage.DataAccess
 {
@@ -13,9 +15,15 @@ namespace FileStorage.DataAccess
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            optionsBuilder.UseSqlServer(connectionString);
+
             base.OnConfiguring(optionsBuilder);
-            //TODO add connection string
-            optionsBuilder.UseSqlServer("Server=DESKTOP-JBRKIJL\\SQLEXPRESS; Database=FileStorage; Integrated Security=True; TrustServerCertificate=True;");
         }
 
         public DbSet<User> Users { get; set; }

@@ -1,8 +1,10 @@
 using FileStorage.Bussiness.Abstract;
 using FileStorage.Bussiness.Concrete;
+using FileStorage.DataAccess;
 using FileStorage.DataAccess.Abstract;
 using FileStorage.DataAccess.Concrete;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 

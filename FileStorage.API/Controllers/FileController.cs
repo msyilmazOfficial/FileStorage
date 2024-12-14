@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Azure.Storage.Blobs;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace FileStorage.API.Controllers
 {
@@ -14,10 +17,12 @@ namespace FileStorage.API.Controllers
     {
         private readonly IFileService _fileService;
         private readonly IPermissionService _permissionService;
-        public FileController(IFileService fileService, IPermissionService permissionService)
+        private readonly IConfiguration _config;
+        public FileController(IFileService fileService, IPermissionService permissionService, IConfiguration config)
         {
             _fileService = fileService;
             _permissionService = permissionService;
+            _config = config;
         }
 
         /// <summary>
@@ -29,8 +34,27 @@ namespace FileStorage.API.Controllers
         [Route("[action]")]
         public async Task<IActionResult> Create([FromBody] Entities.File file)
         {
+            IFormFile fileToUpload = file.FileToUpload;
+
+            if (fileToUpload == null || fileToUpload.Length == 0)
+                return BadRequest("No file uploaded.");
+            var filePath = await UploadFileAsync(fileToUpload.OpenReadStream(), fileToUpload.FileName, "files");
+
+            file.Url = filePath;
             var File = await _fileService.Create(file);
             return CreatedAtAction(nameof(Create), File);
+        }
+
+
+        private async Task<string> UploadFileAsync(Stream fileStream, string fileName, string containerName)
+        {
+            var blobServiceClient = new BlobServiceClient(_config["AzureBlobStorage:ConnectionString"]);
+            var blobContainerClient = blobServiceClient.GetBlobContainerClient(containerName);
+            var blobClient = blobContainerClient.GetBlobClient(fileName);
+
+            await blobClient.UploadAsync(fileStream, overwrite: true);
+
+            return blobClient.Uri.ToString();
         }
 
         /// <summary>

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace FileStorage.Entities
 {
@@ -21,5 +22,7 @@ namespace FileStorage.Entities
         public virtual Folder? Folder { get; set; }
 
         public int? FolderId { get; set; }
+
+        public virtual IFormFile? FileToUpload { get; set; }
     }
 }
