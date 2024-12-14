@@ -13,6 +13,8 @@ builder.Services.AddSingleton<IFolderService, FolderManager>();
 builder.Services.AddSingleton<IFolderRepository, FolderRepository>();
 builder.Services.AddSingleton<IFileService, FileManager>();
 builder.Services.AddSingleton<IFileRepository, FileRepository>();
+builder.Services.AddSingleton<IPermissionService, PermissionManager>();
+builder.Services.AddSingleton<IPermissionRepository, PermissionRepository>();
 
 
 
