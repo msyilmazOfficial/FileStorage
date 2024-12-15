@@ -7,7 +7,6 @@ A backend service built with **.NET 8.0** for securely storing, organizing, and 
 
 - **File Upload**: Upload files of various types (documents, images, videos).
 - **Folder Structure**: Organize files into a hierarchical folder structure.
-- **Sharing**: Share files and folders with other users via links or email invitations.
 - **Permissions**: Control access permissions (view-only, edit, comment, delete) for shared content.
 - **Version Control**: Basic version control to view and restore previous file versions.
 - **Search**: Search for files and folders based on metadata.
@@ -35,4 +34,4 @@ In the appsettings.json **Your-SQL-Server-ConnectionString** and **Your-Azure-Bl
 
 ```bash
 git clone https://github.com/msyilmazOfficial/FileStorage.git
-cd file-storage-service
+cd FileStorage
